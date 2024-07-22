@@ -26,6 +26,7 @@
     "typescript": "^5.4.5"
   },
   "dependencies": {
+    "@bull-board/express": "^5.21.1",
     "@types/ioredis": "^5.0.0",
     "bullmq": "^5.10.0",
     "concurrently": "^8.2.2",
