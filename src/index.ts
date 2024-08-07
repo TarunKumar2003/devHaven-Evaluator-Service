@@ -6,9 +6,8 @@ import { ExpressAdapter } from "@bull-board/express";
 
 import serverConfig from "./config/serverConfig";
 import apiRouter from "./routes";
-import SampleWorker from "./workers/SampleWorker";
-import SampleQueueProducer from "./producers/SampleQueueProducer";
 import SampleQueue from "./queues/SampleQueue";
+import runPython from "./containers/runPythonDocker";
 
 const serverAdapter = new ExpressAdapter();
 serverAdapter.setBasePath("/admin/queues");
@@ -18,6 +17,11 @@ createBullBoard({
 });
 
 const app: Express = express();
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.text());
+
 app.use("/api", apiRouter);
 
 app.use("/admin/queues", serverAdapter.getRouter());
@@ -25,26 +29,6 @@ app.use("/admin/queues", serverAdapter.getRouter());
 app.listen(serverConfig.PORT, () => {
   console.log("Server is start at PORT :", 3000);
 
-  SampleWorker("SampleQueue");
-
-  SampleQueueProducer(
-    "SampleJob",
-    {
-      name: "Tarun",
-      company: "Student",
-      position: "4th Year",
-      locatiion: "Nit Kurukshetra",
-    },
-    2
-  );
-  SampleQueueProducer(
-    "SampleJob",
-    {
-      name: "Aman",
-      company: "Student",
-      position: "4th Year",
-      locatiion: "Nit Kurukshetra",
-    },
-    1
-  );
+  const code = 'print("hello")';
+  runPython(code);
 });

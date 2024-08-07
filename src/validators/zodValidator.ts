@@ -1,8 +1,7 @@
-// simple middle for zod validations
-
 import { NextFunction, Request, Response } from "express";
 import { ZodSchema } from "zod";
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const validate =
   (schema: ZodSchema<any>) =>
   (req: Request, res: Response, next: NextFunction) => {
@@ -10,6 +9,7 @@ export const validate =
       schema.parse({
         ...req.body,
       });
+
       next();
     } catch (error) {
       console.log(error);
